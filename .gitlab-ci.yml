@@ -1,0 +1,51 @@
+image: node:lts
+
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - check
+  # - package
+  # - deploy
+
+variables:
+  # framework and language versions
+  ANGULAR_CLI_VERSION: 14.1.0
+
+before_script:
+  # displays system information
+  - cat /etc/issue
+  - node --version
+  # adds linux packages (chrome)
+  - apt-get update
+  - apt-get install -y wget
+  - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+  - echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
+  - apt-get update
+  - apt-get -y install -y google-chrome-stable
+  # installs npm tools
+  - npm cache clean --force
+  - npm install -g @angular/cli@$ANGULAR_CLI_VERSION
+
+lint-test-job:
+  stage: check
+  variables:
+    CHROME_BIN: /usr/bin/google-chrome
+  script:
+    - npm install
+    - ng lint
+    - npm run test:ci
+  artifacts:
+    when: always
+    paths:
+      - "**/TESTS-*.xml"
+      - coverage/*
+    reports:
+      cobertura: coverage/cobertura-coverage.xml
+      # needs GitLab 14.9 (https://docs.gitlab.com/ee/ci/yaml/artifacts_reports.html#artifactsreportscoverage_report)
+      # coverage_report:
+      #   coverage_format: cobertura
+      #   path: coverage/cobertura-coverage.xml
+      junit:
+        - "**/TESTS-*.xml"
