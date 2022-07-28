@@ -56,13 +56,19 @@ code-quality:
       #   path: coverage/cobertura-coverage.xml
       junit:
         - "**/TESTS-*.xml"
-  only:
-    refs:
-      - merge_requests
-      - $CI_DEFAULT_BRANCH
-    variables:
-      - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ /^release\/.*$/
-      - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  # only:
+  #   refs:
+  #     - merge_requests
+  #   variables:
+  #     - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ /^release\/.*$/
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: $CI_PIPELINE_SOURCE == "web"
+      when: manual
+      allow_failure: true
 
 container-image:
   image:
@@ -76,5 +82,5 @@ container-image:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: always
-    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - if: $CI_PIPELINE_SOURCE == "web"
       when: always
