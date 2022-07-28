@@ -59,8 +59,10 @@ code-quality:
   only:
     refs:
       - merge_requests
+      - $CI_DEFAULT_BRANCH
     variables:
       - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ /^release\/.*$/
+      - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 container-image:
   image:
