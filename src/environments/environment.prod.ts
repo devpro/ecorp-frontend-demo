@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  backendUrl: 'https://localhost:7112/'
+  backendUrl: 'http://ecorp-backend-demo/'
 };

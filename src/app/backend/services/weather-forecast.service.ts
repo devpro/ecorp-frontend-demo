@@ -13,6 +13,6 @@ export class WeatherForecastService {
 
   list(): Observable<Array<WeatherForecastModel>> {
     const params = { };
-    return this.http.get<Array<WeatherForecastModel>>(`${environment.backendUrl}weather-forecast`, { params });
+    return this.http.get<Array<WeatherForecastModel>>(`${environment.backendUrl}weather-forecasts`, { params });
   }
 }
