@@ -1,38 +1,45 @@
-image: node:lts
-
 cache:
   paths:
     - node_modules/
 
 stages:
-  - check
-  # - package
+  - integrate
+  - package
   # - deploy
 
 variables:
+  # defined in GitLab project configuration (Settings > CI/CD > Variables)
+  # CONTAINER_REGISTRY_PASSWD
+  # CONTAINER_REGISTRY_USER
+  # CONTAINER_REGISTRY_DOMAIN
+  # CONTAINER_REGISTRY_FOLDER
   # framework and language versions
   ANGULAR_CLI_VERSION: 14.1.0
+  # container information
+  CONTAINER_REPOSITORY: "$CONTAINER_REGISTRY_DOMAIN/$CONTAINER_REGISTRY_FOLDER/ecorp-frontend-demo"
+  CONTAINER_APP_VERSION: "1.0.$CI_PIPELINE_ID"
 
-before_script:
-  # displays system information
-  - cat /etc/issue
-  - node --version
-  # adds linux packages (chrome)
-  - apt-get update
-  - apt-get install -y wget
-  - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-  - echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
-  - apt-get update
-  - apt-get -y install -y google-chrome-stable
-  # installs npm tools
-  - npm cache clean --force
-  - npm install -g @angular/cli@$ANGULAR_CLI_VERSION
-
-lint-test-job:
-  stage: check
+code-quality:
+  image:
+    name: node:lts
+  stage: integrate
   variables:
     CHROME_BIN: /usr/bin/google-chrome
   script:
+    # displays system information
+    - cat /etc/issue
+    - node --version
+    # adds linux packages (chrome)
+    - apt-get update
+    - apt-get install -y wget
+    - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+    - echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
+    - apt-get update
+    - apt-get -y install -y google-chrome-stable
+    # installs npm tools
+    - npm cache clean --force
+    - npm install -g @angular/cli@$ANGULAR_CLI_VERSION
+    # installs packages and runs code quality tools
     - npm install
     - ng lint
     - npm run test:ci
@@ -49,3 +56,23 @@ lint-test-job:
       #   path: coverage/cobertura-coverage.xml
       junit:
         - "**/TESTS-*.xml"
+  only:
+    refs:
+      - merge_requests
+    variables:
+      - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ /^release\/.*$/
+
+container-image:
+  image:
+    name: quay.io/containers/podman
+  stage: package
+  variables:
+  script:
+    - podman build --format docker -f Dockerfile -t $CONTAINER_REPOSITORY:$CONTAINER_APP_VERSION .
+    - podman login -u $CONTAINER_REGISTRY_USER -p $CONTAINER_REGISTRY_PASSWD $CONTAINER_REGISTRY_DOMAIN
+    - podman push $CONTAINER_REPOSITORY:$CONTAINER_APP_VERSION
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+      when: always
