@@ -14,6 +14,7 @@ npm install -g @angular/cli
 ```
 
 * Docker (or Podman)
+* Visual Studio Code or any other IDE
 
 ## Development server
 
@@ -30,7 +31,7 @@ npm install -g @angular/cli
 
 ## End-to-end tests
 
-* Run `ng e2e` to execute the end-to-end tests via a platform of your choice (not implemented for the moment, will use Cypress in a near future)
+* Run `ng e2e` to execute the end-to-end tests (not implemented for the moment, will use Cypress in a near future)
 
 ## Local container
 
