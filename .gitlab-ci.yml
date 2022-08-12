@@ -74,7 +74,6 @@ container-image:
   image:
     name: quay.io/containers/podman
   stage: package
-  variables:
   script:
     - podman build --format docker -f Dockerfile -t $CONTAINER_REPOSITORY:$CONTAINER_APP_VERSION .
     - podman login -u $CONTAINER_REGISTRY_USER -p $CONTAINER_REGISTRY_PASSWD $CONTAINER_REGISTRY_DOMAIN
