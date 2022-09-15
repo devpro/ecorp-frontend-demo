@@ -49,11 +49,11 @@ code-quality:
       - "**/TESTS-*.xml"
       - coverage/*
     reports:
-      cobertura: coverage/cobertura-coverage.xml
+      # cobertura: coverage/cobertura-coverage.xml
       # needs GitLab 14.9 (https://docs.gitlab.com/ee/ci/yaml/artifacts_reports.html#artifactsreportscoverage_report)
-      # coverage_report:
-      #   coverage_format: cobertura
-      #   path: coverage/cobertura-coverage.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
       junit:
         - "**/TESTS-*.xml"
   # only:
