@@ -1,6 +1,6 @@
 # E Corp Frontend demo application
 
-[![Latest docker image version](https://img.shields.io/docker/v/devprofr/ecorp-frontend-demo.svg)](https://hub.docker.com/r/devprofr/ecorp-frontend-demo)
+[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/devprofr/ecorp-frontend-demo?label=Docker)](https://hub.docker.com/r/devprofr/ecorp-frontend-demo)
 
 Demonstration of a simple frontend for E Corp (from [Mr Robot](https://en.wikipedia.org/wiki/Mr._Robot)). It is a web application (a Single Page Application to be precise), written in TypeScript, using Angular framework.
 
