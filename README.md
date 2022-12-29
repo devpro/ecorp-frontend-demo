@@ -1,8 +1,7 @@
 # E Corp Frontend demo application
 
 [![GitLab Pipeline Status](https://gitlab.20.101.158.124.sslip.io/ecorp/ecorp-frontend-demo/badges/develop/pipeline.svg)](https://gitlab.20.101.158.124.sslip.io/ecorp/ecorp-frontend-demo/-/pipelines)
-[![Quality Gate Status](https://sonarqube.20.101.158.124.sslip.io/api/project_badges/measure?project=ecorp_ecorp-frontend-demo&metric=alert_status)](https://sonarqube.20.101.158.124.sslip.io/summary/new_code?id=ecorp_ecorp-frontend-demo)
-[![Coverage](https://sonarqube.20.101.158.124.sslip.io/api/project_badges/measure?project=ecorp_ecorp-frontend-demo&metric=coverage)](https://sonarqube.20.101.158.124.sslip.io/summary/new_code?id=ecorp_ecorp-frontend-demo)
+[![Quality Gate Status](https://sonarqube.20.101.158.124.sslip.io/api/project_badges/measure?project=ecorp_ecorp-frontend-demo&metric=alert_status&token=333e8ea75eb4621e06f55b61ff16cedb93405be8)](https://sonarqube.20.101.158.124.sslip.io/dashboard?id=ecorp_ecorp-frontend-demo)
 
 Demonstration of a simple frontend for E Corp (from [Mr Robot](https://en.wikipedia.org/wiki/Mr._Robot)). It is a web application (a Single Page Application to be precise), written in TypeScript, using Angular framework.
 
